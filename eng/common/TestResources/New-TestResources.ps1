@@ -726,7 +726,7 @@ try {
             $lastDebugPreference = $DebugPreference
             try {
                 if ($CI) {
-                    $DebugPreference = 'Continue'
+                    # $DebugPreference = 'Continue'
                 }
                 New-AzResourceGroupDeployment -Name $BaseName -ResourceGroupName $resourceGroup.ResourceGroupName -TemplateFile $templateFile.jsonFilePath -TemplateParameterObject $templateFileParameters -Force:$Force
             } catch {
