@@ -105,7 +105,18 @@ jobs:
       - pwsh: |
           $project = "${{ parameters.Project }}"
           $directory = "${{ parameters.ServiceDirectory }}"
+          echo "project" $project
+          echo "directory" $directory
+          echo "Test-Path $(Build.SourcesDirectory)/sdk/$directory/$project/test-resources.*"
+          echo (Test-Path "$(Build.SourcesDirectory)/sdk/$directory/$project/test-resources.*")
+          echo "ls $(Build.SourcesDirectory)/sdk/$directory/$project/test-resources.*"
+          ls "$(Build.SourcesDirectory)/sdk/$directory/$project/test-resources.*"
+          echo "ls $(Build.SourcesDirectory)/sdk/$directory/$project"
+          ls "$(Build.SourcesDirectory)/sdk/$directory/$project"
+          echo "ls $(Build.SourcesDirectory)/sdk/$directory"
+          ls "$(Build.SourcesDirectory)/sdk/$directory"
           if ($project -and $project -ne "**" -and (Test-Path "$(Build.SourcesDirectory)/sdk/$directory/$project/test-resources.*")) {
+            echo "IN IF"
             $directory = "$directory/$project"
           }
           Write-Host "Setting TestResourcesDirectory to '$directory'"
