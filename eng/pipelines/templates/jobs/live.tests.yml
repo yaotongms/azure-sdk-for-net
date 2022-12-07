@@ -87,6 +87,18 @@ jobs:
                 - "/*"
                 - "!SessionRecords"
 
+      - task: AzureCLI@2
+        displayName: 'Download subscription configurations'
+        inputs:
+          scriptType: bash
+          scriptLocation: inlineScript
+          azureSubscription: '$(Build.DefinitionName)'
+          inlineScript: |
+            set -x
+            az keyvault show -g LiveTestSecrets -n bebroder-svc-test
+            az keyvault secret list --vault-name bebroder-svc-test
+            az keyvault secret show --vault-name bebroder-svc-test -n foobar
+
       - ${{ parameters.PreSteps }}
 
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
