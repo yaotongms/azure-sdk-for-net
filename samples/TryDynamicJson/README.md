@@ -2,7 +2,14 @@
 
 Thank you so much for trying out the new `DynamicJson` type!  Our goal is to make protocol methods on Azure SDK clients easy to use.
 
-## Sample project structure
+## Getting Started
+
+Please sync this branch.  Open `TryDynamicJson.sln` in this directory and hit **F5** to run.
+
+Please share any issues you find with us by [filing an issue in our repo](https://github.com/Azure/azure-sdk-for-net/issues/new/choose)
+
+
+## Project structure
 
 In this project you'll find:
 
@@ -103,3 +110,12 @@ value.Address = new {
   City = "Redmond"
 }
 ```
+
+## Learning More
+
+- You can find draft guidance on how to use the type [here](https://github.com/Azure/azure-sdk-for-net/pull/34001)
+- An example showing an existing DPG sample ported from JsonDocument to DynamicJson can be found [here](https://github.com/Azure/azure-sdk-for-net/pull/33931)
+- If you want to try it outside this sample, the latest released version of DynamicJson can be found in [Azure.Core.Experimental 0.1.0-preview.24](https://www.nuget.org/packages/Azure.Core.Experimental/0.1.0-preview.24)
+- Please share any issues you find with us by [filing an issue in our repo](https://github.com/Azure/azure-sdk-for-net/issues/new/choose)
+
+And thanks!
