@@ -27,7 +27,7 @@ Once you have a `dynamic` JSON value from calling `Response.Content.ToDynamic()`
 
 ### Get a property
 
-For example, you can get a JSON property like any C# property:
+You can get a JSON property like any C# property:
 
 ```csharp
 /// JSON is """{ Name = "name" }"""
@@ -44,8 +44,6 @@ DynamicJson is mutable, so you can set a property on it as well:
 dynamic value = response.Content.ToDynamic();
 value.Name = "New Name";
 ```
-
-You can also:
 
 ### Access a value in an array
 
