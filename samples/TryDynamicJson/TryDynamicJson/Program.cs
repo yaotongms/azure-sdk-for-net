@@ -6,11 +6,29 @@ using Azure.Core.TestFramework;
 using TryDynamicJson;
 
 // Create the JSON to return in the mock client responses.
-MockClientOptions options = new MockClientOptions()
+MockClientOptions options = new()
 {
     Transport = new MockTransport(
-        new MockResponse(200).SetContent("""{ "Id" : "123", "Name" : "Alice" }"""),
-        new MockResponse(200).SetContent("""{ "Id" : "123", "Name" : "Bob" }"""))
+
+        // TODO: Return your own JSON values here!
+
+        (MockRequest request) =>
+        {
+            if (request.Content == null)
+            {
+                return new MockResponse(200).SetContent("""{ "Id" : "123", "Name" : "Alice" }""");
+            }
+
+            // If content was passed in on that response, return that instead.
+            MockResponse response = new(200)
+            {
+                ContentStream = new MemoryStream()
+            };
+
+            request.Content.WriteTo(response.ContentStream, CancellationToken.None);
+            return response;
+        }
+    )
 };
 
 MockClient client = new MockClient(new Uri("https://example.azure.com"), new MockCredential(), options);
