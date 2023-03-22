@@ -69,7 +69,7 @@ namespace Azure.ResourceManager.Automanage.Tests
         /// <param name="collection">Configruation profile collection to perform actions against</param>
         /// <param name="profileName">Desired configuration profile name</param>
         /// <returns>ConfigurationProfileResource</returns>
-        protected async Task<ConfigurationProfileResource> CreateConfigurationProfile(ConfigurationProfileCollection collection, string profileName)
+        protected async Task<AutomanageConfigurationProfileResource> CreateConfigurationProfile(AutomanageConfigurationProfileCollection collection, string profileName)
         {
             string configuration = "{" +
                 "\"Antimalware/Enable\":true," +
@@ -87,7 +87,7 @@ namespace Azure.ResourceManager.Automanage.Tests
                 "\"BootDiagnostics/Enable\":true" +
             "}";
 
-            ConfigurationProfileData data = new ConfigurationProfileData(DefaultLocation)
+            AutomanageConfigurationProfileData data = new AutomanageConfigurationProfileData(DefaultLocation)
             {
                 Configuration = new BinaryData(configuration)
             };
@@ -102,13 +102,15 @@ namespace Azure.ResourceManager.Automanage.Tests
         /// <param name="vmId">The ID of the Virtual Machine to assign a profile to</param>
         /// <param name="profileId">ID of desired configuration profile to use</param>
         /// <returns>ConfigurationProfileAssignmentResource</returns>
-        protected async Task<ConfigurationProfileAssignmentResource> CreateAssignment(ResourceIdentifier vmId, string profileId)
+        protected async Task<AutomanageVmConfigurationProfileAssignmentResource> CreateAssignment(ResourceIdentifier vmId, string profileId)
         {
-            var data = new ConfigurationProfileAssignmentData();
-            data.Properties = new ConfigurationProfileAssignmentProperties() { ConfigurationProfile = profileId };
+            var data = new AutomanageConfigurationProfileAssignmentData()
+            {
+                Properties = new AutomanageConfigurationProfileAssignmentProperties() { ConfigurationProfile = new ResourceIdentifier(profileId) }
+            };
 
             // fetch assignments collection
-            var collection = ArmClient.GetConfigurationProfileAssignments(vmId);
+            var collection = ArmClient.GetAutomanageVmConfigurationProfileAssignments(vmId);
             var assignment = await collection.CreateOrUpdateAsync(WaitUntil.Completed, "default", data);
 
             return assignment.Value;
