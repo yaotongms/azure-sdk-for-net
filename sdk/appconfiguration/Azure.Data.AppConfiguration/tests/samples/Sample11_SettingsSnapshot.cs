@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Azure.Core.TestFramework;
 using NUnit.Framework;
 
@@ -13,7 +12,7 @@ namespace Azure.Data.AppConfiguration.Samples
     {
         [Test]
         [Ignore("Snapshot feature is currently available only in the dogfood version")]
-        public void CreateSnapshotAutomaticPolling()
+        public void CreateSnapshot()
         {
             var connectionString = TestEnvironment.ConnectionString;
             var client = new ConfigurationClient(connectionString);
@@ -23,96 +22,15 @@ namespace Azure.Data.AppConfiguration.Samples
             {
                 client.SetConfigurationSetting(setting);
 
-                // #region Snippet:AzConfigSample11_CreateSnapshot_AutomaticPolling
-                List<SnapshotSettingFilter> snapshotFilter = new(new SnapshotSettingFilter[] { new SnapshotSettingFilter(setting.Key) });
+                // #region Snippet:AzConfigSample11_CreateSnapshot
+                List<ConfigurationSettingFilter> snapshotFilter = new(new ConfigurationSettingFilter[] { new ConfigurationSettingFilter(setting.Key) });
                 var settingsSnapshot = new ConfigurationSettingsSnapshot(snapshotFilter);
 
-                CreateSnapshotOperation createSnapshotOperation = client.CreateSnapshot(WaitUntil.Completed, "some_snapshot", settingsSnapshot);
-                ConfigurationSettingsSnapshot createdSnapshot = createSnapshotOperation.Value;
+                ConfigurationSettingsSnapshot createdSnapshot = client.CreateSnapshot("some_snapshot", settingsSnapshot);
                 Console.WriteLine($"Created configuration setting snapshot is: {createdSnapshot}");
                 // #endregion
 
-                // #region Snippet:AzConfigSample11_RetrieveSnapshot_AutomaticPolling
-                ConfigurationSettingsSnapshot retrievedSnapshot = client.GetSnapshot("some_snapshot");
-                Console.WriteLine($"Retrieved configuration setting snapshot is: {retrievedSnapshot}");
-                // #endregion
-
-                Assert.NotNull(retrievedSnapshot);
-                Assert.AreEqual(createdSnapshot.Name, retrievedSnapshot.Name);
-            }
-            finally
-            {
-                AssertStatus200(client.DeleteConfigurationSetting(setting.Key, setting.Label));
-            }
-        }
-
-        [Test]
-        [Ignore("Snapshot feature is currently available only in the dogfood version")]
-        public async Task CreateSnapshotManualPolling()
-        {
-            var connectionString = TestEnvironment.ConnectionString;
-            var client = new ConfigurationClient(connectionString);
-            var setting = new ConfigurationSetting("some_key", "some_value");
-
-            try
-            {
-                client.SetConfigurationSetting(setting);
-
-                // #region Snippet:AzConfigSample11_CreateSnapshot_ManualPolling
-                List<SnapshotSettingFilter> snapshotFilter = new(new SnapshotSettingFilter[] { new SnapshotSettingFilter(setting.Key) });
-                var settingsSnapshot = new ConfigurationSettingsSnapshot(snapshotFilter);
-
-                CreateSnapshotOperation createSnapshotOperation = client.CreateSnapshot(WaitUntil.Started, "some_snapshot", settingsSnapshot);
-                while (true)
-                {
-                    createSnapshotOperation.UpdateStatus();
-                    if (createSnapshotOperation.HasCompleted)
-                        break;
-                    await Task.Delay(1000); // play some elevator music
-                }
-
-                ConfigurationSettingsSnapshot createdSnapshot = createSnapshotOperation.Value;
-                Console.WriteLine($"Created configuration setting snapshot is: {createdSnapshot}");
-                // #endregion
-
-                // #region Snippet:AzConfigSample11_RetrieveSnapshot_ManualPolling
-                ConfigurationSettingsSnapshot retrievedSnapshot = client.GetSnapshot("some_snapshot");
-                Console.WriteLine($"Retrieved configuration setting snapshot is: {retrievedSnapshot}");
-                // #endregion
-
-                Assert.NotNull(retrievedSnapshot);
-                Assert.AreEqual(createdSnapshot.Name, retrievedSnapshot.Name);
-            }
-            finally
-            {
-                AssertStatus200(client.DeleteConfigurationSetting(setting.Key, setting.Label));
-            }
-        }
-
-        [Test]
-        [Ignore("Snapshot feature is currently available only in the dogfood version")]
-        public void CreateSnapshotAutomaticPollingLater()
-        {
-            var connectionString = TestEnvironment.ConnectionString;
-            var client = new ConfigurationClient(connectionString);
-            var setting = new ConfigurationSetting("some_key", "some_value");
-
-            try
-            {
-                client.SetConfigurationSetting(setting);
-
-                // #region Snippet:AzConfigSample11_CreateSnapshot_AutomaticPollingLater
-                List<SnapshotSettingFilter> snapshotFilter = new(new SnapshotSettingFilter[] { new SnapshotSettingFilter(setting.Key) });
-                var settingsSnapshot = new ConfigurationSettingsSnapshot(snapshotFilter);
-
-                CreateSnapshotOperation createSnapshotOperation = client.CreateSnapshot(WaitUntil.Started, "some_snapshot", settingsSnapshot);
-                createSnapshotOperation.WaitForCompletion();
-
-                ConfigurationSettingsSnapshot createdSnapshot = createSnapshotOperation.Value;
-                Console.WriteLine($"Created configuration setting snapshot is: {createdSnapshot}");
-                // #endregion
-
-                // #region Snippet:AzConfigSample11_RetrieveSnapshot_AutomaticPollingLater
+                // #region Snippet:AzConfigSample11_RetrieveSnapshot
                 ConfigurationSettingsSnapshot retrievedSnapshot = client.GetSnapshot("some_snapshot");
                 Console.WriteLine($"Retrieved configuration setting snapshot is: {retrievedSnapshot}");
                 // #endregion
@@ -138,11 +56,10 @@ namespace Azure.Data.AppConfiguration.Samples
             {
                 client.SetConfigurationSetting(setting);
 
-                List<SnapshotSettingFilter> snapshotFilter = new(new SnapshotSettingFilter[] { new SnapshotSettingFilter(setting.Key) });
+                List<ConfigurationSettingFilter> snapshotFilter = new(new ConfigurationSettingFilter[] { new ConfigurationSettingFilter(setting.Key) });
                 var settingsSnapshot = new ConfigurationSettingsSnapshot(snapshotFilter);
 
-                CreateSnapshotOperation createSnapshotOperation = client.CreateSnapshot(WaitUntil.Completed, "some_snapshot", settingsSnapshot);
-                ConfigurationSettingsSnapshot createdSnapshot = createSnapshotOperation.Value;
+                ConfigurationSettingsSnapshot createdSnapshot = client.CreateSnapshot("some_snapshot", settingsSnapshot);
                 Console.WriteLine($"Created configuration setting snapshot is: {createdSnapshot}");
 
                 Assert.NotNull(createdSnapshot);
@@ -183,29 +100,27 @@ namespace Azure.Data.AppConfiguration.Samples
             client.SetConfigurationSetting(firstSetting);
             client.SetConfigurationSetting(secondSetting);
 
-            List<SnapshotSettingFilter> firstSnapshotFilter = new(new SnapshotSettingFilter[] { new SnapshotSettingFilter(firstSetting.Key) });
-            CreateSnapshotOperation createfirstSnapshotOperation = client.CreateSnapshot(WaitUntil.Completed, "first_snapshot", new ConfigurationSettingsSnapshot(firstSnapshotFilter));
-            ConfigurationSettingsSnapshot createdFirstSnapshot = createfirstSnapshotOperation.Value;
-            Console.WriteLine($"Created configuration setting snapshot is: {createdFirstSnapshot}");
+            List<ConfigurationSettingFilter> firstSnapshotFilter = new(new ConfigurationSettingFilter[] { new ConfigurationSettingFilter(firstSetting.Key) });
+            ConfigurationSettingsSnapshot createdfirstSnapshot = client.CreateSnapshot("first_snapshot", new ConfigurationSettingsSnapshot(firstSnapshotFilter));
+            Console.WriteLine($"Created configuration setting snapshot is: {createdfirstSnapshot}");
 
-            Assert.NotNull(createdFirstSnapshot);
-            Assert.AreEqual("first_snapshot", createdFirstSnapshot.Name);
+            Assert.NotNull(createdfirstSnapshot);
+            Assert.AreEqual("first_snapshot", createdfirstSnapshot.Name);
 
-            List<SnapshotSettingFilter> secondSnapshotFilter = new(new SnapshotSettingFilter[] { new SnapshotSettingFilter(secondSetting.Key) });
-            CreateSnapshotOperation createdSecondSnapshotOperation = client.CreateSnapshot(WaitUntil.Completed, "second_snapshot", new ConfigurationSettingsSnapshot(secondSnapshotFilter));
-            ConfigurationSettingsSnapshot createdSecondSnapshot = createdSecondSnapshotOperation.Value;
-            Console.WriteLine($"Created configuration setting snapshot is: {createdSecondSnapshot}");
+            List<ConfigurationSettingFilter> secondSnapshotFilter = new(new ConfigurationSettingFilter[] { new ConfigurationSettingFilter(secondSetting.Key) });
+            ConfigurationSettingsSnapshot createdsecondSnapshot = client.CreateSnapshot("second_snapshot", new ConfigurationSettingsSnapshot(secondSnapshotFilter));
+            Console.WriteLine($"Created configuration setting snapshot is: {createdsecondSnapshot}");
 
-            Assert.NotNull(createdSecondSnapshot);
-            Assert.AreEqual("second_snapshot", createdSecondSnapshot.Name);
+            Assert.NotNull(createdsecondSnapshot);
+            Assert.AreEqual("second_snapshot", createdsecondSnapshot.Name);
 
             // #region Snippet:Sample_GetSnapshots
             var count = 0;
-            //foreach (ConfigurationSettingsSnapshot item in client.GetSnapshots())
-            //{
-            //    count++;
-            //    Console.WriteLine($"Name {item.Name} status {item.Status}");
-            //}
+            foreach (ConfigurationSettingsSnapshot item in client.GetSnapshots())
+            {
+                count++;
+                Console.WriteLine($"Name {item.Name} status {item.Status}");
+            }
             // #endregion
 
             Assert.AreEqual(2, count);

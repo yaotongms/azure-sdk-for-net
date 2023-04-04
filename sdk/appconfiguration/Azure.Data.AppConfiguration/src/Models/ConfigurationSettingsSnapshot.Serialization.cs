@@ -28,7 +28,7 @@ namespace Azure.Data.AppConfiguration
             if (Optional.IsDefined(RetentionPeriod))
             {
                 writer.WritePropertyName("retention_period");
-                writer.WriteNumberValue(RetentionPeriod.Value.TotalSeconds);
+                writer.WriteNumberValue(RetentionPeriod.Value);
             }
             if (Optional.IsCollectionDefined(Tags))
             {
@@ -49,7 +49,7 @@ namespace Azure.Data.AppConfiguration
             Optional<string> name = default;
             Optional<SnapshotStatus> status = default;
             Optional<int> statusCode = default;
-            IList<SnapshotSettingFilter> filters = default;
+            IList<ConfigurationSettingFilter> filters = default;
             Optional<CompositionType> compositionType = default;
             Optional<DateTimeOffset> created = default;
             Optional<DateTimeOffset?> expires = default;
@@ -87,10 +87,10 @@ namespace Azure.Data.AppConfiguration
                 }
                 if (property.NameEquals("filters"))
                 {
-                    List<SnapshotSettingFilter> array = new List<SnapshotSettingFilter>();
+                    List<ConfigurationSettingFilter> array = new List<ConfigurationSettingFilter>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(SnapshotSettingFilter.DeserializeKeyValueFilter(item));
+                        array.Add(ConfigurationSettingFilter.DeserializeKeyValueFilter(item));
                     }
                     filters = array;
                     continue;
