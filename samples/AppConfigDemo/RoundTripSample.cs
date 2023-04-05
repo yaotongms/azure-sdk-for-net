@@ -89,7 +89,7 @@ namespace AppConfigToy
 
             response = client.GetConfigurationSetting("FontColor", null, null, null, null, null);
 
-            dynamic json = response.Content.ToDynamic();
+            dynamic json = response.Content.ToDynamicFromJson(DynamicJsonOptions.AzureDefault);
             fontColor = json.value;
             usedBy = json.tags["UsedBy"];
 
