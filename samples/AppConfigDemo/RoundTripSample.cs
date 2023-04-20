@@ -95,9 +95,6 @@ namespace AppConfigToy
 
             WriteWithFontColor(fontColor, usedBy);
 
-            json.last_modified = "2023-02-15T17:53:58\u002B00:00";  // Workaround escaping bug.
-
-
             json.value = "Magenta";
 
             client.SetConfigurationSetting("FontColor", RequestContent.Create((object)json), ContentType.ApplicationJson);
