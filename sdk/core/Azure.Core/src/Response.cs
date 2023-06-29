@@ -130,6 +130,11 @@ namespace Azure
         /// <returns>A new instance of <see cref="Response{T}"/> with the provided value and HTTP response.</returns>
         public static Response<T> FromValue<T>(T value, Response response)
         {
+            if (value is null)
+            {
+                throw new ArgumentNullException("Response.FromValue requires a non-null argument.");
+            }
+
             return new ValueResponse<T>(response, value);
         }
 
