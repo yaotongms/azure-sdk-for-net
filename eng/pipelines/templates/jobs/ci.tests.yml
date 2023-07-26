@@ -90,6 +90,11 @@ jobs:
       - template: /eng/pipelines/templates/steps/dotnet-diagnostics.yml
         parameters:
           LogFilePath: $(Build.ArtifactStagingDirectory)/test.binlog
+      - pwsh: |
+          echo "START BREADCRUMB"
+          try { cat .assets/.breadcrumb } catch {}
+          echo "END BREADCRUMB"
+        displayName: BREADCRUMB
       - script: >-
           dotnet test eng/service.proj
           --filter "(TestCategory!=Manually) & (TestCategory!=Live) & ($(AdditionalTestFilters))"
