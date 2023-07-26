@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
@@ -40,8 +41,51 @@ namespace Azure.Core.TestFramework
             return recording;
         }
 
+        private void dumpBreadcrumb()
+        {
+            Console.WriteLine("DUMPING BREADCRUMB");
+            var path = _recordedTestBase.AssetsJsonPath;
+            path = Path.GetDirectoryName(path);
+            while (true)
+            {
+                // Check for root .git directory or, less commonly, a .git file for git worktrees.
+                string gitRootPath = Path.Combine(path, ".git");
+                var isGitRoot = Directory.Exists(gitRootPath) || File.Exists(gitRootPath);
+
+                if (isGitRoot)
+                {
+                    Console.WriteLine("FOUND GIT ROOT");
+                    try
+                    {
+                        Console.WriteLine("START BREACRUMB");
+                        string filePath = Path.Combine(path, ".assets", ".breadcrumb");
+                        string fileContents = File.ReadAllText(filePath);
+                        Console.WriteLine(fileContents);
+                        Console.WriteLine("END BREACRUMB");
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("BREADCRUMB ERROR" + ex.ToString());
+                    }
+                    return;
+                }
+
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                if (directoryInfo.Parent == null)
+                {
+                    Console.WriteLine("DID NOT FIND GIT ROOT");
+                    return;
+                }
+
+                path = Path.GetDirectoryName(path);
+            }
+        }
+
         internal async Task InitializeProxySettingsAsync()
         {
+            dumpBreadcrumb();
+
             var assetsJson = _recordedTestBase.AssetsJsonPath;
 
             switch (Mode)
