@@ -309,47 +309,47 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://sanitized.skype.com/calling/callConnections/421f0700-e1ab-43ed-b470-491d7c034c29:sendDtmf?api-version=2023-06-15-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "122",
-        "Content-Type": "application/json",
-        "Repeatability-First-Sent": "Sanitized",
-        "Repeatability-Request-ID": "Sanitized",
-        "User-Agent": "azsdk-net-Communication.CallAutomation/1.1.0-alpha.20230719.1 (.NET 7.0.9; Microsoft Windows 10.0.22621)",
-        "x-ms-client-request-id": "cbad818a335ccd8c2cef9b55bcbb201c",
-        "x-ms-content-sha256": "Sanitized",
-        "x-ms-date": "Wed, 19 Jul 2023 12:46:25 GMT",
-        "x-ms-return-client-request-id": "true"
-      },
-      "RequestBody": {
-        "tones": [
-          "one"
-        ],
-        "targetParticipant": {
-          "rawId": "Sanitized",
-          "phoneNumber": {
-            "value": "Sanitized"
-          }
+        "RequestUri": "https://sanitized.skype.com/calling/callConnections/421f0700-e1ab-43ed-b470-491d7c034c29:sendDtmfTones?api-version=2023-06-15-preview",
+        "RequestMethod": "POST",
+        "RequestHeaders": {
+            "Accept": "application/json",
+            "Authorization": "Sanitized",
+            "Content-Length": "122",
+            "Content-Type": "application/json",
+            "Repeatability-First-Sent": "Sanitized",
+            "Repeatability-Request-ID": "Sanitized",
+            "User-Agent": "azsdk-net-Communication.CallAutomation/1.1.0-alpha.20230719.1 (.NET 7.0.9; Microsoft Windows 10.0.22621)",
+            "x-ms-client-request-id": "cbad818a335ccd8c2cef9b55bcbb201c",
+            "x-ms-content-sha256": "Sanitized",
+            "x-ms-date": "Wed, 19 Jul 2023 12:46:25 GMT",
+            "x-ms-return-client-request-id": "true"
         },
-        "operationContext": "Sales"
-      },
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "Content-Length": "28",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 19 Jul 2023 12:46:28 GMT",
-        "Repeatability-Result": "accepted",
-        "X-Azure-Ref": "0I9u3ZAAAAADuc7zCGTjATqPqFa/92cBLQk9NMDJFREdFMDkyMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-        "X-Cache": "CONFIG_NOCACHE",
-        "X-Microsoft-Skype-Chain-ID": "05c4d491-34eb-47c5-a5db-73f6e3554c93",
-        "x-ms-client-request-id": "cbad818a335ccd8c2cef9b55bcbb201c"
-      },
-      "ResponseBody": {
-        "operationContext": "Sales"
-      }
+        "RequestBody": {
+            "tones": [
+                "one"
+            ],
+            "targetParticipant": {
+                "rawId": "Sanitized",
+                "phoneNumber": {
+                    "value": "Sanitized"
+                }
+            },
+            "operationContext": "Sales"
+        },
+        "StatusCode": 202,
+        "ResponseHeaders": {
+            "Content-Length": "28",
+            "Content-Type": "application/json; charset=utf-8",
+            "Date": "Wed, 19 Jul 2023 12:46:28 GMT",
+            "Repeatability-Result": "accepted",
+            "X-Azure-Ref": "0I9u3ZAAAAADuc7zCGTjATqPqFa/92cBLQk9NMDJFREdFMDkyMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+            "X-Cache": "CONFIG_NOCACHE",
+            "X-Microsoft-Skype-Chain-ID": "05c4d491-34eb-47c5-a5db-73f6e3554c93",
+            "x-ms-client-request-id": "cbad818a335ccd8c2cef9b55bcbb201c"
+        },
+        "ResponseBody": {
+            "operationContext": "Sales"
+        }
     },
     {
       "RequestUri": "https://sanitized.skype.com/calling/callConnections/421f0700-e1ab-43ed-b470-491d7c034c29:stopContinuousDtmfRecognition?api-version=2023-06-15-preview",
