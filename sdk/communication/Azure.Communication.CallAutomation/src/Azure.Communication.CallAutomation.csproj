@@ -7,7 +7,6 @@
     </Description>
     <AssemblyTitle>Azure Communication CallAutomation Service</AssemblyTitle>
     <Version>1.1.0-beta.1</Version>
-    <ApiCompatVersion>1.0.0</ApiCompatVersion>
     <!--The ApiCompatVersion is managed automatically and should not generally be modified manually.-->
     <PackageTags>Microsoft Azure Communication CallAutomation Service;Microsoft;Azure;Azure Communication Service;Azure Communication CallAutomation Service;Calling;Communication;$(PackageCommonTags)</PackageTags>
     <TargetFrameworks>$(RequiredTargetFrameworks)</TargetFrameworks>
@@ -30,7 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Core" />
-    <PackageReference Include="Azure.Communication.Common" />
+    <PackageReference Include="Azure.Communication.Common" Version="2.0.0-beta.1" />
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 </Project>
