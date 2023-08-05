@@ -29,7 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Core" />
-    <PackageReference Include="Azure.Communication.Common" Version="2.0.0-beta.1" />
+    <PackageReference Include="Azure.Communication.Common" />
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 </Project>
