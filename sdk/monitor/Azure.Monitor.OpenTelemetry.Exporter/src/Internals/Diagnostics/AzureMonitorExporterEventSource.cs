@@ -383,5 +383,17 @@ namespace Azure.Monitor.OpenTelemetry.Exporter.Internals.Diagnostics
 
         [Event(39, Message = "Received a partial success from ingestion. This status code is not handled and telemetry will be lost. Error StatusCode: {0}. Error Message: {1}", Level = EventLevel.Warning)]
         public void PartialContentResponseUnhandled(string errorStatusCode, string errorMessage) => WriteEvent(39, errorStatusCode, errorMessage);
+
+        [NonEvent]
+        public void FailedToReadEnvironmentVariables(Exception ex)
+        {
+            if (IsEnabled(EventLevel.Warning))
+            {
+                FailedToReadEnvironmentVariables(ex.FlattenException().ToInvariantString());
+            }
+        }
+
+        [Event(40, Message = "Failed to read environment variables due to an exception. This may prevent the Exporter from initializing. {0}", Level = EventLevel.Warning)]
+        public void FailedToReadEnvironmentVariables(string errorMessage) => WriteEvent(40, errorMessage);
     }
 }
