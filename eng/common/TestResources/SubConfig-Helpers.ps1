@@ -109,11 +109,17 @@ function SetSubscriptionConfiguration([object]$subscriptionConfiguration)
                 # Mark values as secret so we don't print json blobs containing secrets in the logs.
                 # Prepend underscore to the variable name, so we can still access the variable names via environment
                 # variables if they get set subsequently.
+                if ([Environment]::GetEnvironmentVariable($nestedPair.Name)) {
+                    throw "Environment variable '$key' is already set"
+                }
                 if (ShouldMarkValueAsSecret "AZURE_" $nestedPair.Name $nestedPair.Value) {
                     Write-Host "##vso[task.setvariable variable=_$($nestedPair.Name);issecret=true;]$($nestedPair.Value)"
                 }
             }
         } else {
+            if ([Environment]::GetEnvironmentVariable($pair.Name)) {
+                throw "Environment variable '$key' is already set"
+            }
             if (ShouldMarkValueAsSecret "AZURE_" $pair.Name $pair.Value) {
                 Write-Host "##vso[task.setvariable variable=_$($pair.Name);issecret=true;]$($pair.Value)"
             }
