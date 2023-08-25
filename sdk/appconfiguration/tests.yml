@@ -5,3 +5,5 @@ extends:
   parameters:
     ServiceDirectory: appconfiguration
     SupportedClouds: 'Public,Preview,UsGov,China'
+    EnvVars:
+      SubscriptionId: foobar
