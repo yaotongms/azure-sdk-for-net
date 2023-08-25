@@ -110,7 +110,7 @@ function SetSubscriptionConfiguration([object]$subscriptionConfiguration)
                 # Prepend underscore to the variable name, so we can still access the variable names via environment
                 # variables if they get set subsequently.
                 if ([Environment]::GetEnvironmentVariable($nestedPair.Name)) {
-                    throw "Environment variable '$($nestedPair.Name)' is already set"
+                    throw "Environment variable '$($nestedPair.Name)' is already set. Check the tests.yml/ci.yml EnvVars parameter does not conflict with the subscription config json"
                 }
                 if (ShouldMarkValueAsSecret "AZURE_" $nestedPair.Name $nestedPair.Value) {
                     Write-Host "##vso[task.setvariable variable=_$($nestedPair.Name);issecret=true;]$($nestedPair.Value)"
@@ -118,7 +118,7 @@ function SetSubscriptionConfiguration([object]$subscriptionConfiguration)
             }
         } else {
             if ([Environment]::GetEnvironmentVariable($pair.Name)) {
-                throw "Environment variable '$($pair.Name)' is already set"
+                throw "Environment variable '$($pair.Name)' is already set. Check the tests.yml/ci.yml EnvVars parameter does not conflict with the subscription config json"
             }
             if (ShouldMarkValueAsSecret "AZURE_" $pair.Name $pair.Value) {
                 Write-Host "##vso[task.setvariable variable=_$($pair.Name);issecret=true;]$($pair.Value)"

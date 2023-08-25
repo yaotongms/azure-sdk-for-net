@@ -6,4 +6,4 @@ extends:
     ServiceDirectory: appconfiguration
     SupportedClouds: 'Public,Preview,UsGov,China'
     EnvVars:
-      SubscriptionId: foobar
+      AZURE_AUTHORITY_HOST: foobar
