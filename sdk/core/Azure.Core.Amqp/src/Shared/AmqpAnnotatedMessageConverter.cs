@@ -851,7 +851,7 @@ namespace Azure.Core.Amqp.Shared
         ///
         /// <returns>The <see cref="ArraySegment{T}" /> containing the stream data.</returns>
         ///
-        private static ArraySegment<byte> ReadStreamToArraySegment(Stream stream)
+        internal static ArraySegment<byte> ReadStreamToArraySegment(Stream stream)
         {
             switch (stream)
             {
@@ -874,7 +874,9 @@ namespace Azure.Core.Amqp.Shared
 
                 default:
                     {
-                        using var memStreamCopy = new MemoryStream(StreamBufferSizeInBytes);
+                        long remaining = stream.CanSeek ? Math.Max(stream.Length - stream.Position, 0) : StreamBufferSizeInBytes;
+                        int capacity = remaining > 0 ? (int)Math.Min(remaining, int.MaxValue) : StreamBufferSizeInBytes;
+                        using var memStreamCopy = new MemoryStream(capacity);
                         stream.CopyTo(memStreamCopy, StreamBufferSizeInBytes);
                         if (!memStreamCopy.TryGetBuffer(out ArraySegment<byte> segment))
                         {
