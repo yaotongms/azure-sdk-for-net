@@ -100,6 +100,7 @@ namespace Azure.Generator.Provisioning.Providers
         {
             if (!_propertyLookup.TryGetValue(inputProp, out var propInfo))
                 return null;
+
             return new ProvisioningPropertyInfo(
                 propInfo.PropertyName,
                 propInfo.IsOutput,
@@ -200,7 +201,7 @@ namespace Azure.Generator.Provisioning.Providers
             var properties = new List<PropertyProvider>();
             foreach (var propInfo in _allProperties)
             {
-                var property = CodeModelGenerator.Instance.TypeFactory.CreateProperty(propInfo.Property, this);
+                var property = ProvisioningGenerator.Instance.TypeFactory.CreateProvisioningProperty(propInfo.Property, this);
                 if (property != null)
                     properties.Add(property);
             }
@@ -502,9 +503,9 @@ namespace Azure.Generator.Provisioning.Providers
                 // For singleton resources, the "name" property is output-only with a default value
                 string? defaultValue = null;
                 if (serializedName == "name"
-                    && _resourceProjection?.SingletonResourceName is not null)
+                    && _resourceProjection?.SingletonResourceName is string singletonResourceName)
                 {
-                    defaultValue = _resourceProjection.SingletonResourceName;
+                    defaultValue = singletonResourceName;
                     isOutput = true;
                     isSettable = false;
                 }
