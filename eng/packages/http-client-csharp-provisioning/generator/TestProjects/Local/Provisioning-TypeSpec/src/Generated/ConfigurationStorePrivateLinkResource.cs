@@ -5,7 +5,6 @@
 
 #nullable disable
 
-using System.ComponentModel;
 using Azure.Core;
 using Azure.Provisioning;
 using Azure.Provisioning.Primitives;
@@ -13,19 +12,19 @@ using Azure.Provisioning.Resources;
 
 namespace Azure.Provisioning.ProvisioningTypeSpec
 {
-    /// <summary> A profile resource. </summary>
-    public partial class ProfileRevision : ProvisionableResource
+    /// <summary> A private link resource for a configuration store. </summary>
+    public partial class ConfigurationStorePrivateLinkResource : ProvisionableResource
     {
         private BicepValue<ResourceIdentifier> _id;
         private BicepValue<string> _name;
         private SystemData _systemData;
-        private ProfileProperties _properties;
-        private ResourceReference<Profile> _parent;
+        private ProvisioningTypeSpecPrivateLinkResourceProperties _properties;
+        private ResourceReference<ConfigurationStore> _parent;
 
-        /// <summary> Creates a new ProfileRevision. </summary>
+        /// <summary> Creates a new ConfigurationStorePrivateLinkResource. </summary>
         /// <param name="bicepIdentifier"> The bicep identifier name. </param>
         /// <param name="resourceVersion"> The resource API version. </param>
-        public ProfileRevision(string bicepIdentifier, string resourceVersion = null) : base(bicepIdentifier, "ProvisioningTypeSpec/configurationStores/profiles/revisions", resourceVersion ?? "2024-05-01")
+        internal ConfigurationStorePrivateLinkResource(string bicepIdentifier, string resourceVersion = null) : base(bicepIdentifier, "ProvisioningTypeSpec/configurationStores/privateLinkResources", resourceVersion ?? "2024-05-01")
         {
         }
 
@@ -64,23 +63,18 @@ namespace Azure.Provisioning.ProvisioningTypeSpec
             }
         }
 
-        /// <summary> Gets or sets the Properties. </summary>
-        internal ProfileProperties Properties
+        /// <summary> Gets the Properties. </summary>
+        public ProvisioningTypeSpecPrivateLinkResourceProperties Properties
         {
             get
             {
                 Initialize();
                 return _properties;
             }
-            set
-            {
-                Initialize();
-                AssignOrReplace(ref _properties, value);
-            }
         }
 
         /// <summary> Gets or sets the Parent. </summary>
-        public Profile Parent
+        public ConfigurationStore Parent
         {
             get
             {
@@ -94,69 +88,30 @@ namespace Azure.Provisioning.ProvisioningTypeSpec
             }
         }
 
-        /// <summary> Gets or sets the Description. </summary>
-        public BicepValue<string> Description
-        {
-            get
-            {
-                return Properties is null ? default : Properties.Description;
-            }
-            set
-            {
-                if (Properties is null)
-                {
-                    Properties = new ProfileProperties();
-                }
-                Properties.Description = value;
-            }
-        }
-
-        /// <summary> Gets or sets the Name. </summary>
-        public BicepValue<string> SkuName
-        {
-            get
-            {
-                return Properties is null ? default : Properties.SkuName;
-            }
-            set
-            {
-                if (Properties is null)
-                {
-                    Properties = new ProfileProperties();
-                }
-                Properties.SkuName = value;
-            }
-        }
-
-        /// <summary> Define all the provisionable properties for ProfileRevision. </summary>
+        /// <summary> Define all the provisionable properties for ConfigurationStorePrivateLinkResource. </summary>
         protected override void DefineProvisionableProperties()
         {
             base.DefineProvisionableProperties();
             _id = DefineProperty<ResourceIdentifier>(nameof(Id), new string[] { "id" }, isOutput: true);
             _name = DefineProperty<string>(nameof(Name), new string[] { "name" }, isRequired: true);
             _systemData = DefineModelProperty<SystemData>(nameof(SystemData), new string[] { "systemData" }, isOutput: true);
-            _properties = DefineModelProperty<ProfileProperties>(nameof(Properties), new string[] { "properties" });
-            _parent = DefineResource<Profile>("Parent", new string[] { "parent" }, isRequired: true);
+            _properties = DefineModelProperty<ProvisioningTypeSpecPrivateLinkResourceProperties>(nameof(Properties), new string[] { "properties" });
+            _parent = DefineResource<ConfigurationStore>("Parent", new string[] { "parent" }, isRequired: true);
             DefineAdditionalProperties();
         }
 
-        /// <summary> Creates a reference to an existing ProfileRevision. </summary>
+        /// <summary> Creates a reference to an existing ConfigurationStorePrivateLinkResource. </summary>
         /// <param name="bicepIdentifier"> The bicep identifier name. </param>
         /// <param name="resourceVersion"> The resource API version. </param>
-        public static ProfileRevision FromExisting(string bicepIdentifier, string resourceVersion = null)
+        public static ConfigurationStorePrivateLinkResource FromExisting(string bicepIdentifier, string resourceVersion = null)
         {
-            ProfileRevision result = new ProfileRevision(bicepIdentifier, resourceVersion);
+            ConfigurationStorePrivateLinkResource result = new ConfigurationStorePrivateLinkResource(bicepIdentifier, resourceVersion);
             result.IsExistingResource = true;
             return result;
         }
 
-        /// <summary> Define additional provisionable properties for ProfileRevision that are not part of the generated code. </summary>
+        /// <summary> Define additional provisionable properties for ConfigurationStorePrivateLinkResource that are not part of the generated code. </summary>
         partial void DefineAdditionalProperties();
-
-        /// <summary> Get the requirements for naming this resource. </summary>
-        /// <returns> Naming requirements. </returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override ResourceNameRequirements GetResourceNameRequirements() => new ResourceNameRequirements(1, 24, ResourceNameCharacters.LowercaseLetters | ResourceNameCharacters.UppercaseLetters | ResourceNameCharacters.Numbers | ResourceNameCharacters.Hyphen);
 
         /// <summary></summary>
         public static partial class ResourceVersions
