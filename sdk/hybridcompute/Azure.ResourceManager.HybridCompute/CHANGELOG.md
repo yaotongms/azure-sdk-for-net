@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `StatusReason` property to `HybridComputeMachineData` (via `MachineProperties`) and the new `MachineStatusReason` enum, indicating the reason for the machine's status.
+- Added `GatewayBypass` property to `ArcGatewayData` and `ArcGatewayPatch` for configuring domain bypass on the Arc gateway.
+
 ### Bugs Fixed
 
 ### Other Changes
